@@ -46,6 +46,7 @@ $ npm run dev
 ## Integração de API
 
 - [Bot do slack](https://api.slack.com/methods/users.profile.get) —  API utilizada para usar o bot do slack no chat
+- Api do slack para integração da autenticação do usuário.
 
 
 ## Credits
