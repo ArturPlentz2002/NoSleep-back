@@ -1,21 +1,19 @@
 import express from "express";
 import feedbackRoutes from "./routes/feedbackRoutes";
 import { sendMessageHandler } from "./controllers/SlackController";
+import cors from "cors";
 
-const app = express();
-const port = process.env.PORT || 3000;
-
+const app = express();             // ✅ Primeiro cria o app
+app.use(cors());                   // ✅ Depois usa o CORS
 app.use(express.json());
 
-// Rota de teste
+const port = process.env.PORT || 3000;
+
 app.get("/", (_req, res) => {
   res.send("Servidor está rodando!");
 });
 
-// Rota do Slack
 app.post("/send-message", sendMessageHandler);
-
-// ✅ Rota de feedbacks
 app.use("/feedback", feedbackRoutes);
 
 app.listen(port, () => {
