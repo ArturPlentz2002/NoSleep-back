@@ -71,5 +71,5 @@ contribuidores são:
 [@leticiadavinunes](https://github.com/leticiadavinunes)
 [@ArthurBlasi](https://github.com/ArthurBlasi)
 [@ArturPlentz2002](https://github.com/ArturPlentz2002)
-[@trein-luis](https://github.com/trein-luis)git 
-[@JoaoKS1][https://github.com/JoaoKS1]
+[@trein-luis](https://github.com/trein-luis) 
+[@JoaoKS1](https://github.com/JoaoKS1)
