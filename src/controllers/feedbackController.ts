@@ -1,73 +1,63 @@
-import { Request, Response } from 'express';
-import feedbackService from '../services/feedbackServices';
+import { Request, Response } from "express";
+import feedbackService from "../services/feedbackServices";
 
-// Define an interface for the expected request body for sending feedback
+// Define o formato esperado no body do envio de feedback
 interface SendFeedbackRequestBody {
-    text: string;
-    tags?: string[];
-    anon?: boolean;
+  text: string;
+  tags?: string[];
+  anon?: boolean;
+  receiverUser?: string; // opcional: se quiser enviar feedback para alguém específico
 }
 
 export const feedbackController = {
-    /**
-     * Handles the request to send feedback.
-     * @param req - Express request object.
-     * @param res - Express response object.
-     */
-    send: (req: Request<{}, {}, SendFeedbackRequestBody>, res: Response): void => {
-        // req.user should exist due to authMiddleware
-        const userId = req.user!.id;
-        const { text, tags, anon } = req.body;
+  /**
+   * Envia um novo feedback
+   */
+  send: async (req: Request<{}, {}, SendFeedbackRequestBody>, res: Response): Promise<void> => {
+    const userId = req.user!.id; // preenchido pelo authMiddleware
+    const { text, tags, anon } = req.body;
 
-        if (!text) {
-            res.status(400).json({ message: "Missing required field: text" });
-            return;
-        }
-
-        try {
-            const sentFeedback = feedbackService.sendFeedback(
-                userId,
-                text,
-                tags, // Service handles default
-                anon  // Service handles default
-            );
-            res.status(201).json(sentFeedback);
-        } catch (error: any) {
-            console.error(`Error sending feedback: ${error.message}`);
-            res.status(500).json({ message: "Error processing feedback" });
-        }
-    },
-
-    /**
-     * Handles the request to get received feedback.
-     * @param req - Express request object.
-     * @param res - Express response object.
-     */
-    getInbox: (req: Request, res: Response): void => {
-        const userId = req.user!.id;
-        try {
-            const receivedFeedbacks = feedbackService.getReceivedFeedback(userId);
-            res.status(200).json(receivedFeedbacks);
-        } catch (error: any) {
-            console.error(`Error getting inbox: ${error.message}`);
-            res.status(500).json({ message: "Error retrieving received feedback" });
-        }
-    },
-
-    /**
-     * Handles the request to get sent feedback.
-     * @param req - Express request object.
-     * @param res - Express response object.
-     */
-    getSent: (req: Request, res: Response): void => {
-        const userId = req.user!.id;
-        try {
-            const sentFeedbacks = feedbackService.getSentFeedback(userId);
-            res.status(200).json(sentFeedbacks);
-        } catch (error: any) {
-            console.error(`Error getting sent feedback: ${error.message}`);
-            res.status(500).json({ message: "Error retrieving sent feedback" });
-        }
+    if (!text?.trim()) {
+      res.status(400).json({ message: "Missing required field: text" });
+      return;
     }
-};
 
+    try {
+      const result = await feedbackService.sendFeedback(userId, text, tags, anon);
+      res.status(201).json(result);
+    } catch (error: any) {
+      console.error(`❌ Erro ao enviar feedback: ${error.message}`);
+      res.status(500).json({ message: "Erro ao processar feedback" });
+    }
+  },
+
+  /**
+   * Busca os feedbacks recebidos pelo usuário logado
+   */
+  getInbox: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user!.id;
+
+    try {
+      const feedbacks = await feedbackService.getReceivedFeedback(userId);
+      res.status(200).json(feedbacks);
+    } catch (error: any) {
+      console.error(`❌ Erro ao buscar inbox: ${error.message}`);
+      res.status(500).json({ message: "Erro ao buscar feedbacks recebidos" });
+    }
+  },
+
+  /**
+   * Busca os feedbacks enviados pelo usuário logado
+   */
+  getSent: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user!.id;
+
+    try {
+      const feedbacks = await feedbackService.getSentFeedback(userId);
+      res.status(200).json(feedbacks);
+    } catch (error: any) {
+      console.error(`❌ Erro ao buscar enviados: ${error.message}`);
+      res.status(500).json({ message: "Erro ao buscar feedbacks enviados" });
+    }
+  }
+};
