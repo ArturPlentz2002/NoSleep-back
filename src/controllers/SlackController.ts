@@ -1,13 +1,27 @@
-import { Request, Response } from "express";
-import SlackService from "../services/SlackService";
+import { WebClient } from "@slack/web-api";
+import dotenv from "dotenv";
+dotenv.config();
 
-export async function sendMessageHandler(req: Request, res: Response) {
-  const { channel, text } = req.body;
+class SlackService {
+  private client: WebClient;
 
-  try {
-    const result = await SlackService.sendMessage(channel, text);
-    res.json({ ok: true, ts: result.ts });
-  } catch (error) {
-    res.status(500).json({ ok: false });
+  constructor() {
+    this.client = new WebClient(process.env.SLACK_BOT_TOKEN);
+  }
+
+  async sendToChannel(text: string) {
+    try {
+      const result = await this.client.chat.postMessage({
+        channel: process.env.SLACK_CHANNEL_ID!, // canal fixo
+        text,
+      });
+      console.log("✅ Mensagem enviada para o canal:", result.ts);
+      return result;
+    } catch (error: any) {
+      console.error("❌ Erro ao enviar para canal:", error.data?.error || error.message);
+      throw new Error(error.data?.error || "Erro ao enviar para canal Slack");
+    }
   }
 }
+
+export default new SlackService();

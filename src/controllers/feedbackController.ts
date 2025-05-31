@@ -1,21 +1,18 @@
+// src/controllers/feedbackController.ts
 import { Request, Response } from "express";
-import feedbackService from "../services/feedbackServices";
+import feedbackService from "../services/feedbackService";
 
-// Define o formato esperado no body do envio de feedback
 interface SendFeedbackRequestBody {
   text: string;
   tags?: string[];
   anon?: boolean;
-  receiverUser?: string; // opcional: se quiser enviar feedback para alguém específico
+  receiverSlackId?: string;
 }
 
 export const feedbackController = {
-  /**
-   * Envia um novo feedback
-   */
   send: async (req: Request<{}, {}, SendFeedbackRequestBody>, res: Response): Promise<void> => {
-    const userId = req.user!.id; // preenchido pelo authMiddleware
-    const { text, tags, anon } = req.body;
+    const userId = req.user!.id;
+    const { text, tags, anon, receiverSlackId } = req.body;
 
     if (!text?.trim()) {
       res.status(400).json({ message: "Missing required field: text" });
@@ -31,9 +28,6 @@ export const feedbackController = {
     }
   },
 
-  /**
-   * Busca os feedbacks recebidos pelo usuário logado
-   */
   getInbox: async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.id;
 
@@ -46,9 +40,6 @@ export const feedbackController = {
     }
   },
 
-  /**
-   * Busca os feedbacks enviados pelo usuário logado
-   */
   getSent: async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.id;
 
