@@ -4,7 +4,7 @@ import { sendMessageHandler } from "./controllers/SlackController";
 import cors from "cors";
 import { connectDB } from "./db";
 
-connectDB(); // <- Não esqueça de chamar isso antes de app.listen!
+connectDB(); 
 
 
 const app = express();            
