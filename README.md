@@ -58,7 +58,7 @@ Este software utiliza os seguintes pacotes open source:
 - [Node](https://nodejs.org/pt) — O Node.js é um ambiente de execução JavaScript no lado do servidor
 - [Mongose](https://mongoosejs.com/) — O Mongoose é uma biblioteca do Node.js que facilita a interação com o MongoDB, um banco de dados NoSQL.
 - [MongoDB](https://www.mongodb.com/) — O MongoDB é um banco de dados NoSQL (não relacional) de código aberto, muito utilizado em aplicações modernas, especialmente com Node.js.
-- [Prettier/ESLint](https://prettier.io/docs/integrating-with-linters) — É um formatador de código para garantir persistência
+- [Prettier](https://prettier.io/docs/integrating-with-linters) — É um formatador de código para garantir persistência
 - [ESLint](https://eslint.org/) — É um formatador de código para garantir persistência
 
 
