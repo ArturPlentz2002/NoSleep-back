@@ -1,12 +1,13 @@
 import express from "express";
+import { sendMessageHandler } from "./controllers/SlackController";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.get("/", (_req, res) => {
-  res.send("Servidor Node está rodando com sucesso!");
-});
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+app.post("/send-message", sendMessageHandler);
+
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });
