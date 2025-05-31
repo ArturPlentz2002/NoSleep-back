@@ -3,6 +3,7 @@ import feedbackRoutes from "./routes/feedbackRoutes";
 import { sendMessageHandler } from "./controllers/SlackController";
 import cors from "cors";
 import { connectDB } from "./db";
+import statsRoutes from './routes/statsRoutes';
 
 connectDB(); 
 
@@ -19,6 +20,7 @@ app.get("/", (_req, res) => {
 
 app.post("/send-message", sendMessageHandler);
 app.use("/feedback", feedbackRoutes);
+app.use("/api/user", statsRoutes); 
 
 app.listen(port, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${port}`);
