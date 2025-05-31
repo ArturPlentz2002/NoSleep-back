@@ -3,8 +3,8 @@ import feedbackRoutes from "./routes/feedbackRoutes";
 import { sendMessageHandler } from "./controllers/SlackController";
 import cors from "cors";
 
-const app = express();             // ✅ Primeiro cria o app
-app.use(cors());                   // ✅ Depois usa o CORS
+const app = express();            
+app.use(cors());                  
 app.use(express.json());
 
 const port = process.env.PORT || 3000;
