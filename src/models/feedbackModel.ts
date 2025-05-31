@@ -1,8 +1,9 @@
 import { Schema, model } from "mongoose";
 
+// Definição do schema do feedback
 const FeedbackSchema = new Schema(
   {
-    sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    sender: { type: String, required: true }, // <-- ALTERAÇÃO FEITA AQUI
     receiverUser: { type: Schema.Types.ObjectId, ref: "User" },
     receiverTeam: { type: Schema.Types.ObjectId, ref: "Team" },
     content: { type: String, required: true },
@@ -12,4 +13,5 @@ const FeedbackSchema = new Schema(
   { timestamps: true }
 );
 
+// Criação do modelo Mongoose
 export const FeedbackModel = model("Feedback", FeedbackSchema);
