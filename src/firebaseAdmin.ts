@@ -1,10 +1,5 @@
 import * as admin from 'firebase-admin';
 import * as path from 'path';
-import * as dotenv from 'dotenv';
-
-// Carrega variáveis de ambiente do arquivo .env, se existir
-dotenv.config();
-
 // Defina aqui o caminho para seu arquivo JSON de Service Account.
 // Ajuste conforme o local exato dentro de src/ ou na raiz do projeto.
 const serviceAccountPath = path.join(__dirname, 'service-account.json');
